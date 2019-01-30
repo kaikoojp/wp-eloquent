@@ -152,7 +152,16 @@ class Database implements ConnectionInterface
      */
     public function cursor($query, $bindings = [], $useReadPdo = true)
     {
-
+        $query = $this->bind_params($query, $bindings);
+        if ( ! empty( $this->db->dbh ) && $this->db->use_mysqli && $result = mysqli_query($this->db->dbh, $query)) {
+            while($row = mysqli_fetch_assoc($result)) {
+                yield $row;
+            }
+        } elseif ( ! empty( $this->dbh ) && mysql_query( $query, $this->dbh )) {
+            while($row = mysql_fetch_assoc($result)) {
+                yield $row;
+            }
+        }
     }
 
     /**
