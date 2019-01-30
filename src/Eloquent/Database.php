@@ -184,7 +184,7 @@ class Database implements ConnectionInterface
 
         $bindings = array_map(function ($replace) {
             if (is_string($replace)) {
-                $replace = "'" . $this->db->_esc_sql($replace) . "'";
+                $replace = "'" . $this->db->_escape($replace) . "'";
             } elseif ($replace === null) {
                 $replace = 'null';
             }
