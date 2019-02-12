@@ -1,7 +1,13 @@
 {
     "name": "tareq1988/wp-eloquent",
     "description": "Eloquent ORM for WordPress",
-    "keywords": ["wordpress", "plugin", "orm", "eloquent", "sql"],
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "orm",
+        "eloquent",
+        "sql"
+    ],
     "homepage": "https://github.com/tareq1988/wp-eloquent",
     "require": {
         "illuminate/database": "^5.4",
@@ -14,9 +20,20 @@
             "email": "tareq@wedevs.com"
         }
     ],
-    "autoload" : {
-      "psr-4" : {
-        "WeDevs\\ORM\\": "src/"
-      }
+    "autoload": {
+        "psr-4": {
+            "WeDevs\\ORM\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WeDevs\\ORM\\Test\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
