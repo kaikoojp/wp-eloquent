@@ -5,7 +5,8 @@ ENV COMPOSER_VERSION 1.8.4
 
 ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 
-RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community\nhttp://dl-4.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
+    echo "http://dl-4.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
     apk add --update --no-cache \
     bash \
     curl \
@@ -24,6 +25,9 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community\nhttp://dl-4.alpinel
     php7-mysqli \
     php7-xml \
     php7-dom \
+    php7-xmlreader \
+    php7-xmlwriter \
+    php7-tokenizer \
     php7-zlib && \
     curl https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar -o /usr/bin/composer && \
     chmod +x /usr/bin/composer
