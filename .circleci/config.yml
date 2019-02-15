@@ -1,7 +1,9 @@
+---
+
 version: 2
 jobs:
   build:
-    machines: true
+    machine: true
     steps:
       - checkout
       - run:
