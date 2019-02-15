@@ -40,5 +40,5 @@ jobs:
   test-latest:
     <<: *steps
     environment:
-      WORDPRESS_VERSION: "5.0"
+      WORDPRESS_VERSION: "latest"
 

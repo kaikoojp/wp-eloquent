@@ -5,8 +5,7 @@ WORDPRESS_VERSION ?= 5.0
 wpd=docker exec -it wordpress /usr/bin/wp --allow-root --path=/mnt/wordpress
 composer=docker exec -it wordpress /usr/bin/composer
 
-
-recreate: teardown compose echo setup
+recreate: teardown compose setup
 
 compose:
 	docker-compose build && docker-compose up -d
