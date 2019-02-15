@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    machines: true
+    steps:
+      - checkout
+      - run:
+          name: Build Docker Image
+          command: make compose
+
+      - run:
+          name: Preparations
+          command: |
+            composer install -n --prefer-dist
+
+      - run:
+          name: Install WordPress
+          command: make setup
+
+      - run:
+          name: Test Run
+          command: composer run test
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
