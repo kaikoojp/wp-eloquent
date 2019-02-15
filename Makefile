@@ -13,7 +13,7 @@ compose:
 
 setup:
 	${wpd} core download --locale=ja --version=${WORDPRESS_VERSION} && \
-	${wpd} core config --dbhost=${WORDPRESS_DB_HOST} --dbname=${WORDPRESS_DB_NAME} --dbuser=${WORDPRESS_DB_USER} --dbpass=${WORDPRESS_DB_PASSWORD} && \
+	${wpd} core config --dbhost=db:3306 --dbname=wordpress --dbuser=wordpress --dbpass=wordpress && \
 	${wpd} core install \
 		--url=http://wp-test \
 		--title="Awesome website" \
