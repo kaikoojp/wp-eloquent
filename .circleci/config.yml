@@ -39,6 +39,6 @@ jobs:
       WORDPRESS_VERSION: 5.0
   test-latest:
     <<: *steps
-      environment:
-        WORDPRESS_VERSION: 5.0
+    environment:
+      WORDPRESS_VERSION: 5.0
 
