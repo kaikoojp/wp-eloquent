@@ -12,8 +12,7 @@ jobs:
 
       - run:
           name: Preparations
-          command: |
-            composer install -n --prefer-dist
+          command: make vendor
 
       - run:
           name: Install WordPress

@@ -13,6 +13,10 @@ setup:
 		--url=http://wp-test \
 		--title="Awesome website" \
 		--admin_user=admin --admin_password=admin --admin_email=admin@admin.com
+
+vendor:
+	${wpd} composer install  -n --prefer-dist
+
 test:
 	${composer} run test
 
