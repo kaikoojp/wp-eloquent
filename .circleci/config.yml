@@ -1,23 +1,40 @@
 ---
-
 version: 2
+workflows:
+  version: 2
+  test:
+    jobs:
+      - 4.9
+      - 5.0
+      - latest
+
+_steps: &steps
+  machine: true
+  steps:
+    - checkout
+    - run:
+        name: Build Docker Image
+        command: make compose
+
+    - run:
+        name: Preparations
+        command: make vendor
+
+    - run:
+        name: Install WordPress
+        command: make setup
+
+    - run:
+        name: Test Run
+        command: make test
+
 jobs:
-  build:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: Build Docker Image
-          command: make compose
+  4.9:
+    <<: *steps
+    environment:
+      WORDPRESS_VERSION: 4.9
+  5.0:
+    <<: *steps
+    environment:
+      WORDPRESS_VERSION: 5.0
 
-      - run:
-          name: Preparations
-          command: make vendor
-
-      - run:
-          name: Install WordPress
-          command: make setup
-
-      - run:
-          name: Test Run
-          command: make test

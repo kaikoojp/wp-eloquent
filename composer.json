@@ -10,8 +10,12 @@
     ],
     "homepage": "https://github.com/tareq1988/wp-eloquent",
     "require": {
+        "php": "^7.0",
         "illuminate/database": "^5.4",
         "illuminate/pagination": "^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
     },
     "license": "GPL-2.0-or-later",
     "authors": [
@@ -29,9 +33,6 @@
         "psr-4": {
             "WeDevs\\ORM\\Test\\": "tests/"
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^8.0"
     },
     "scripts": {
         "test": "phpunit"
