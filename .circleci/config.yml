@@ -4,9 +4,9 @@ workflows:
   version: 2
   test:
     jobs:
-      - 4.9
-      - 5.0
-      - latest
+      - test-4.9
+      - test-5.0
+      - test-latest
 
 _steps: &steps
   machine: true
@@ -29,12 +29,16 @@ _steps: &steps
         command: make test
 
 jobs:
-  4.9:
+  test-4.9:
     <<: *steps
     environment:
       WORDPRESS_VERSION: 4.9
-  5.0:
+  test-5.0:
     <<: *steps
     environment:
       WORDPRESS_VERSION: 5.0
+  test-latest:
+    <<: *steps
+      environment:
+        WORDPRESS_VERSION: 5.0
 
