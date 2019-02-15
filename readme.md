@@ -1,7 +1,7 @@
 # Eloquent Wrapper for WordPress
-
 This is a library package to use Laravel's [Eloquent ORM](http://laravel.com/docs/5.0/eloquent) with WordPress.
 
+[![CircleCI](https://circleci.com/gh/kaikoojp/wp-eloquent/tree/master.svg?style=shield)](https://circleci.com/gh/kaikoojp/wp-eloquent/tree/master)
 
 ## Package Installation
 
