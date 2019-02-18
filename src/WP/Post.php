@@ -5,17 +5,20 @@ namespace WeDevs\ORM\WP;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use WeDevs\ORM\Eloquent\Model;
+use WeDevs\ORM\WP\Term\TermRelationShip;
+use WeDevs\ORM\WP\Term\TermTaxonomy;
 
 /**
  * Class Post
  *
  * @package WeDevs\ORM\WP
+ * @method static self find(Integer $id)
  */
 class Post extends Model
 {
-
+    protected $table = 'posts';
     protected $post_type = null;
     protected $primaryKey = 'ID';
 
@@ -31,6 +34,15 @@ class Post extends Model
         'ID' => 'integer',
         'post_parent' => 'integer',
     ];
+
+    public function newQuery()
+    {
+        $query = parent::newQuery();
+        if($this->post_type !== null) {
+            return $this->scopeType($query, $this->post_type);
+        }
+        return $query;
+    }
 
     /**
      * Filter by post type
@@ -107,6 +119,19 @@ class Post extends Model
     public function childs()
     {
         return $this->hasMany(static::class, 'post_parent', 'ID');
+    }
+
+    /**
+     * @return HasManyThrough
+     */
+    public function terms()
+    {
+        return $this->hasManyThrough(
+            TermTaxonomy::class,
+            TermRelationShip::class,
+            'object_id',
+            'term_taxonomy_id'
+        )->with('term');
     }
 
     /**

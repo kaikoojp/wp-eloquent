@@ -38,7 +38,7 @@ abstract class Model extends Eloquent {
      */
     public function getTable() {
         if ( isset( $this->table ) ) {
-            return $this->table;
+            return $this->getConnection()->db->prefix . $this->table;
         }
 
         $table = str_replace( '\\', '', snake_case( str_plural( class_basename( $this ) ) ) );
