@@ -59,4 +59,13 @@ class PostTest extends TestCase
 
         $this->assertNull(Post::find(1)->root());
     }
+
+    /**
+     * @test
+     */
+    public function termsのテスト()
+    {
+        $post = Post::with(['terms', 'terms.term'])->find(1);
+        $this->assertEquals('未分類', $post->terms->first()->term->getAttribute('name'));
+    }
 }
