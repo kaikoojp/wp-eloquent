@@ -3,6 +3,9 @@
 namespace WeDevs\ORM\WP;
 
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use WeDevs\ORM\Eloquent\Model;
 
 /**
@@ -18,6 +21,16 @@ class Post extends Model
 
     const CREATED_AT = 'post_date';
     const UPDATED_AT = 'post_modified';
+
+    protected $fillable = [
+        'post_title',
+        'post_parent'
+    ];
+
+    protected $casts = [
+        'ID' => 'integer',
+        'post_parent' => 'integer',
+    ];
 
     /**
      * Filter by post type
@@ -67,7 +80,7 @@ class Post extends Model
      */
     public function comments()
     {
-        return $this->hasMany('WeDevs\ORM\WP\Comment', 'comment_post_ID');
+        return $this->hasMany(Comment::class, 'comment_post_ID');
     }
 
     /**
@@ -77,6 +90,38 @@ class Post extends Model
      */
     public function meta()
     {
-        return $this->hasMany('WeDevs\ORM\WP\PostMeta', 'post_id');
+        return $this->hasMany(PostMeta::class, 'post_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function parent()
+    {
+        return $this->belongsTo(static::class, 'post_parent', 'ID');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function childs()
+    {
+        return $this->hasMany(static::class, 'post_parent', 'ID');
+    }
+
+    /**
+     * @return null|Post
+     */
+    public function root()
+    {
+        $posts = $this->scopeType($this->newQuery())->get(['ID', 'post_parent'])->pluck(null, 'ID')->toArray();
+        $func = function(array $posts, int $id) use(&$func) {
+            if($posts[$id]['post_parent'] === 0) {
+                return $id;
+            }
+            return $func($posts, $posts[$id]['post_parent']);
+        };
+        $root = $func($posts, $this->getAttribute('ID'));
+        return $root === $this->getAttribute('ID') ? null : static::find($root);
     }
 }

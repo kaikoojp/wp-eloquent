@@ -3,8 +3,6 @@ FROM alpine:edge
 ENV WP_CLI_VERSION 1.4.0
 ENV COMPOSER_VERSION 1.8.4
 
-ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
-
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     echo "http://dl-4.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
     apk add --update --no-cache \
