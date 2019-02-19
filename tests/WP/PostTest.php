@@ -10,6 +10,8 @@ namespace WeDevs\ORM\Test\WP;
 
 use PHPUnit\Framework\TestCase;
 use WeDevs\ORM\WP\Post;
+use WeDevs\ORM\WP\Term\Term;
+use WeDevs\ORM\WP\Term\TermTaxonomy;
 
 class PostTest extends TestCase
 {
@@ -67,5 +69,22 @@ class PostTest extends TestCase
     {
         $post = Post::with(['terms', 'terms.term'])->find(1);
         $this->assertEquals('未分類', $post->terms->first()->term->getAttribute('name'));
+    }
+
+    /**
+     * @test
+     */
+    public function categoriesのテスト()
+    {
+        $post = Post::with(['categories'])->find(1);
+        $this->assertEquals('未分類', $post->categories->first()->term->getAttribute('name'));
+        $term = new Term(['name'=>'テスト']);
+        $term->save();
+        $term_taxnomy = new TermTaxonomy(['taxonomy' => 'category']);
+        $term->taxonomies()->save($term_taxnomy);
+        $post->terms()->save($term_taxnomy);
+
+        $post = Post::with(['categories.term'])->find(1);
+        $this->assertEquals('テスト', $post->categories->pluck('term','term_id')->get($term->getAttribute('term_id'))->getAttribute('name'));
     }
 }

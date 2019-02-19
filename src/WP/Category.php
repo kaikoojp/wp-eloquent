@@ -8,12 +8,9 @@
 
 namespace WeDevs\ORM\WP;
 
-use WeDevs\ORM\Eloquent\Model;
+use WeDevs\ORM\WP\Term\Term;
 
-class Category extends Model
+class Category extends Term
 {
-    protected $table = 'terms';
-    protected $primaryKey = 'term_id';
     protected $taxonomy = 'category';
-
 }
