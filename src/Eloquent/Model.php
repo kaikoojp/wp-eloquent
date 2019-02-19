@@ -2,11 +2,15 @@
 namespace WeDevs\ORM\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Str;
 
 /**
  * Model Class
  *
  * @package WeDevs\ERP\Framework
+ * @mixin Model
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ * @mixin \Illuminate\Database\Query\Builder
  */
 abstract class Model extends Eloquent {
 
@@ -15,17 +19,7 @@ abstract class Model extends Eloquent {
      */
     public function __construct( array $attributes = array() ) {
         static::$resolver = new Resolver();
-
         parent::__construct( $attributes );
-    }
-
-    /**
-     * Get the database connection for the model.
-     *
-     * @return \Illuminate\Database\Connection
-     */
-    public function getConnection() {
-        return Database::instance();
     }
 
     /**
@@ -38,11 +32,19 @@ abstract class Model extends Eloquent {
      */
     public function getTable() {
         if ( isset( $this->table ) ) {
-            return $this->getConnection()->db->prefix . $this->table;
+            return $this->getTablePrefix() . $this->table;
         }
 
-        $table = str_replace( '\\', '', snake_case( str_plural( class_basename( $this ) ) ) );
+        $table = str_replace( '\\', '', Str::snake( Str::plural( class_basename( $this ) ) ) );
 
-        return $this->getConnection()->db->prefix . $table ;
+        return $this->getTablePrefix() . $table ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTablePrefix()
+    {
+        return $this->getConnection()->db->prefix;
     }
 }

@@ -143,7 +143,6 @@ class Database implements ConnectionInterface
 
     /**
      * Run a select statement against the database and returns a generator.
-     * TODO: Implement cursor and all the related sub-methods.
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -188,7 +187,6 @@ class Database implements ConnectionInterface
             } elseif ($replace === null) {
                 $replace = 'null';
             }
-
             return $replace;
         }, $bindings);
 
@@ -281,7 +279,7 @@ class Database implements ConnectionInterface
      *
      * @return int
      */
-    public function affectingStatement($query, $bindings = array())
+    public function affectingStatement($query, $bindings = [])
     {
         $new_query = $this->bind_params($query, $bindings, true);
 
@@ -290,7 +288,7 @@ class Database implements ConnectionInterface
         if ($result === false || $this->db->last_error)
             throw new QueryException($new_query, $bindings, new \Exception($this->db->last_error));
 
-        return intval($result);
+        return (int)$result;
     }
 
     /**
@@ -322,7 +320,7 @@ class Database implements ConnectionInterface
 
             // Micro-optimization: check for scalar values before instances
             if (is_bool($value)) {
-                $bindings[$key] = intval($value);
+                $bindings[$key] = (int)$value;
             } elseif (is_scalar($value)) {
                 continue;
             } elseif ($value instanceof \DateTime) {

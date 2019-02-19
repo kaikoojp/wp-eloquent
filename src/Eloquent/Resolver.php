@@ -3,7 +3,8 @@ namespace WeDevs\ORM\Eloquent;
 
 use Illuminate\Database\ConnectionResolverInterface;
 
-class Resolver implements ConnectionResolverInterface {
+class Resolver implements ConnectionResolverInterface
+{
 
     /**
      * Get a database connection instance.
