@@ -16,7 +16,8 @@ setup:
 	${wpd} core install \
 		--url=http://wp-test \
 		--title="Awesome website" \
-		--admin_user=admin --admin_password=admin --admin_email=admin@admin.com
+		--admin_user=admin --admin_password=admin --admin_email=admin@admin.com \
+		--skip-email
 
 vendor:
 	${composer} install  -n --prefer-dist
