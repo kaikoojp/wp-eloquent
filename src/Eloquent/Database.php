@@ -337,14 +337,14 @@ class Database implements ConnectionInterface
     /**
      * Execute a Closure within a transaction.
      *
-     * @param  \Closure $callback
+     * @param  callable $callback
      * @param  int  $attempts
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    public function transaction(\Closure $callback, $attempts = 1)
+    public function transaction(callable $callback, $attempts = 1)
     {
         $this->beginTransaction();
         try {
@@ -364,10 +364,7 @@ class Database implements ConnectionInterface
      */
     public function beginTransaction()
     {
-        $transaction = $this->unprepared("START TRANSACTION;");
-        if (false !== $transaction) {
-            $this->transactionCount++;
-        }
+        $this->unprepared("START TRANSACTION;");
     }
 
     /**
@@ -377,13 +374,7 @@ class Database implements ConnectionInterface
      */
     public function commit()
     {
-        if ($this->transactionCount < 1) {
-            return;
-        }
-        $transaction = $this->unprepared("COMMIT;");
-        if (false !== $transaction) {
-            $this->transactionCount--;
-        }
+        $this->unprepared("COMMIT;");
     }
 
     /**
@@ -393,13 +384,7 @@ class Database implements ConnectionInterface
      */
     public function rollBack()
     {
-        if ($this->transactionCount < 1) {
-            return;
-        }
-        $transaction = $this->unprepared("ROLLBACK;");
-        if (false !== $transaction) {
-            $this->transactionCount--;
-        }
+        $this->unprepared("ROLLBACK;");
     }
 
     /**

@@ -13,13 +13,13 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/reposit
     freetype-dev libjpeg-turbo-dev libpng-dev \
     mariadb-client \
     php7 \
+    php7-json \
     php7-ftp \
     php7-gd \
     php7-openssl \
     php7-phar \
     php7-iconv \
     php7-mbstring \
-    php7-mongodb \
     php7-mysqli \
     php7-xml \
     php7-dom \
