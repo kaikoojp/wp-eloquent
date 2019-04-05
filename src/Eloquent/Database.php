@@ -1,6 +1,7 @@
 <?php
 namespace WeDevs\ORM\Eloquent;
 
+use Closure;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\Grammar;
@@ -336,15 +337,12 @@ class Database implements ConnectionInterface
 
     /**
      * Execute a Closure within a transaction.
-     *
-     * @param  callable $callback
-     * @param  int  $attempts
-     *
+     * @param Closure $callback
+     * @param  int    $attempts
      * @return mixed
-     *
      * @throws \Exception
      */
-    public function transaction(callable $callback, $attempts = 1)
+    public function transaction(Closure $callback, $attempts = 1)
     {
         $this->beginTransaction();
         try {
@@ -400,11 +398,11 @@ class Database implements ConnectionInterface
     /**
      * Execute the given callback in "dry run" mode.
      *
-     * @param  \Closure $callback
+     * @param  Closure $callback
      *
      * @return array
      */
-    public function pretend(\Closure $callback)
+    public function pretend(Closure $callback)
     {
         // TODO: Implement pretend() method.
     }
