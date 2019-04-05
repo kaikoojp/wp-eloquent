@@ -418,6 +418,18 @@ class Database implements ConnectionInterface
     }
 
     /**
+     * Get a new query builder instance.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function query(): Builder
+    {
+        return new Builder(
+            $this, $this->getQueryGrammar(), $this->getPostProcessor()
+        );
+    }
+
+    /**
      * Return self as PDO
      *
      * @return \WeDevs\ORM\Eloquent\Database
