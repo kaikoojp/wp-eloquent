@@ -15,4 +15,9 @@ class TermRelationShip extends Model
     protected $table = 'term_relationships';
     protected $primaryKey = 'term_taxonomy_id';
     public $timestamps = false;
+    protected $casts = [
+        'object_id',
+        'term_taxonomy_id',
+        'term_order',
+    ];
 }

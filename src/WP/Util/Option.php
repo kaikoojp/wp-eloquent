@@ -21,5 +21,10 @@ class Option extends Model
     protected $hidden = [
         'option_id',
     ];
+
+    protected $casts = [
+        'option_id' => 'integer',
+    ];
+
     public $timestamps = false;
 }

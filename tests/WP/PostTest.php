@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use WeDevs\ORM\WP\Post;
 use WeDevs\ORM\WP\Term\Term;
 use WeDevs\ORM\WP\Term\TermTaxonomy;
+use WeDevs\ORM\WP\User;
 
 class PostTest extends TestCase
 {
@@ -37,11 +38,11 @@ class PostTest extends TestCase
     /**
      * @test
      */
-    public function parentとchildsのテスト()
+    public function parentとchildrenのテスト()
     {
         $post = new Post(['post_title' => 'test', 'post_parent' => 1]);
         $post->save();
-        $this->assertContains($post->getAttribute('ID'), Post::with(['childs'])->find(1)->childs->pluck('ID'));
+        $this->assertContains($post->getAttribute('ID'), Post::with(['children'])->find(1)->children->pluck('ID'));
         $this->assertEquals(1, $post->parent->getAttribute('ID'));
     }
 
@@ -54,7 +55,7 @@ class PostTest extends TestCase
         $post->save();
         for($i = 0; $i < 5; $i++) {
             $child = new Post(['post_title' => sprintf('child: %d', $post->getAttribute('ID'))]);
-            $post->childs()->save($child);
+            $post->children()->save($child);
             $post = $child;
         }
         $this->assertEquals(1, $child->root()->getAttribute('ID'));
@@ -86,5 +87,18 @@ class PostTest extends TestCase
 
         $post = Post::with(['categories.term'])->find(1);
         $this->assertEquals('テスト', $post->categories->pluck('term','term_id')->get($term->getAttribute('term_id'))->getAttribute('name'));
+    }
+
+    /**
+     * @test
+     */
+    public function randのテスト()
+    {
+        try {
+            $this->assertStringContainsString('order by RAND', Post::inRandomOrder()->toSql());
+            $this->assertStringContainsString('order by RAND', User::inRandomOrder()->toSql());
+        } catch(\Exception $exception) {
+            $this->fail($exception->getMessage());
+        }
     }
 }

@@ -28,23 +28,28 @@ class Term extends Model
         'slug',
     ];
 
+    protected $casts = [
+        'term_id'    => 'integer',
+        'term_group' => 'integer',
+    ];
+
     /**
      * @param Builder $builder
      * @param string  $name
      * @param string  $taxonomy
      * @return self
      */
-    public function scopeTaxonomy(Builder $builder, string $name ,string $taxonomy): self
+    public function scopeTaxonomy(Builder $builder, string $name, string $taxonomy): self
     {
-        return $builder->where('name', $name)->with(['taxonomies' => function($relation) use ($taxonomy) {
-            $relation->where('taxonomy', $taxonomy);
+        return $builder->where('name', $name)->with(['taxonomies' => static function (HasMany $relation) use ($taxonomy) {
+            $relation->where('taxonomy', '=', $taxonomy);
         }])->first();
     }
 
     /**
      * @return HasMany
      */
-    public function metas()
+    public function metas(): HasMany
     {
         return $this->hasMany(TermMeta::class, 'term_id');
     }
@@ -52,7 +57,7 @@ class Term extends Model
     /**
      * @return HasMany
      */
-    public function taxonomies()
+    public function taxonomies(): HasMany
     {
         return $this->hasMany(TermTaxonomy::class, 'term_id', 'term_id');
     }

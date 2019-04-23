@@ -16,4 +16,8 @@ class TermMeta extends Model
     protected $table = 'term_meta';
     protected $fillable = ['meta_key', 'meta_value'];
     protected $primaryKey = 'meta_id';
+    protected $casts = [
+        'meta_id',
+        'term_id',
+    ];
 }

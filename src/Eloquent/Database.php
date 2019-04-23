@@ -2,11 +2,14 @@
 namespace WeDevs\ORM\Eloquent;
 
 use Closure;
+use Generator;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\Grammar;
-use Illuminate\Database\Query\Processors\Processor;
+use Illuminate\Database\Query\Grammars\MySqlGrammar;
+use Illuminate\Database\Query\Processors\MySqlProcessor;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Database\Query\Processors\Processor;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 
@@ -34,7 +37,7 @@ class Database implements ConnectionInterface
      *
      * @return \WeDevs\ORM\Eloquent\Database
      */
-    public static function instance()
+    public static function instance(): Database
     {
         static $instance = false;
 
@@ -70,12 +73,10 @@ class Database implements ConnectionInterface
 
     /**
      * Begin a fluent query against a database table.
-     *
      * @param  string $table
-     *
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      */
-    public function table($table)
+    public function table($table): Builder
     {
         $processor = $this->getPostProcessor();
 
@@ -91,9 +92,9 @@ class Database implements ConnectionInterface
      *
      * @param  mixed $value
      *
-     * @return \Illuminate\Database\Query\Expression
+     * @return Expression
      */
-    public function raw($value)
+    public function raw($value): Expression
     {
         return new Expression($value);
     }
@@ -130,7 +131,7 @@ class Database implements ConnectionInterface
      *
      * @return array
      */
-    public function select($query, $bindings = [], $useReadPdo = true)
+    public function select($query, $bindings = [], $useReadPdo = true): array
     {
         $query = $this->bind_params($query, $bindings);
 
@@ -148,9 +149,9 @@ class Database implements ConnectionInterface
      * @param  string  $query
      * @param  array  $bindings
      * @param  bool  $useReadPdo
-     * @return \Generator
+     * @return Generator
      */
-    public function cursor($query, $bindings = [], $useReadPdo = true)
+    public function cursor($query, $bindings = [], $useReadPdo = true): Generator
     {
         $query = $this->bind_params($query, $bindings);
         if ( ! empty( $this->db->dbh ) && $this->db->use_mysqli && $result = mysqli_query($this->db->dbh, $query)) {
@@ -206,7 +207,7 @@ class Database implements ConnectionInterface
      *
      * @return array
      */
-    public function bind_and_run($query, $bindings = array())
+    public function bind_and_run($query, $bindings = array()): array
     {
         $new_query = $this->bind_params($query, $bindings);
 
@@ -226,7 +227,7 @@ class Database implements ConnectionInterface
      *
      * @return bool
      */
-    public function insert($query, $bindings = array())
+    public function insert($query, $bindings = array()): bool
     {
         return $this->statement($query, $bindings);
     }
@@ -239,7 +240,7 @@ class Database implements ConnectionInterface
      *
      * @return int
      */
-    public function update($query, $bindings = array())
+    public function update($query, $bindings = array()): int
     {
         return $this->affectingStatement($query, $bindings);
     }
@@ -252,7 +253,7 @@ class Database implements ConnectionInterface
      *
      * @return int
      */
-    public function delete($query, $bindings = array())
+    public function delete($query, $bindings = array()): int
     {
         return $this->affectingStatement($query, $bindings);
     }
@@ -265,7 +266,7 @@ class Database implements ConnectionInterface
      *
      * @return bool
      */
-    public function statement($query, $bindings = array())
+    public function statement($query, $bindings = array()): bool
     {
         $new_query = $this->bind_params($query, $bindings, true);
 
@@ -407,20 +408,26 @@ class Database implements ConnectionInterface
         // TODO: Implement pretend() method.
     }
 
-    public function getPostProcessor()
+    /**
+     * @return Processor
+     */
+    public function getPostProcessor(): Processor
     {
-        return new Processor();
+        return new MySqlProcessor();
     }
 
-    public function getQueryGrammar()
+    /**
+     * @return Grammar
+     */
+    public function getQueryGrammar(): Grammar
     {
-        return new Grammar();
+        return new MySqlGrammar();
     }
 
     /**
      * Get a new query builder instance.
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      */
     public function query(): Builder
     {
@@ -434,7 +441,7 @@ class Database implements ConnectionInterface
      *
      * @return \WeDevs\ORM\Eloquent\Database
      */
-    public function getPdo()
+    public function getPdo(): Database
     {
         return $this;
     }
@@ -446,7 +453,7 @@ class Database implements ConnectionInterface
      *
      * @return int
      */
-    public function lastInsertId($args)
+    public function lastInsertId($args): int
     {
         return $this->db->insert_id;
     }

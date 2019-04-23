@@ -9,6 +9,7 @@
 namespace WeDevs\ORM\WP\Term;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use WeDevs\ORM\Eloquent\Model;
 use WeDevs\ORM\WP\Post;
 
@@ -21,15 +22,25 @@ class TermTaxonomy extends Model
         'taxonomy',
     ];
 
+    protected $casts = [
+        'term_taxonomy_id' => 'integer',
+        'term_id'          => 'integer',
+        'parent'           => 'integer',
+        'count'            => 'integer',
+    ];
+
     /**
      * @return BelongsTo
      */
-    public function term()
+    public function term(): BelongsTo
     {
         return $this->belongsTo(Term::class, 'term_id', 'term_id');
     }
 
-    public function posts()
+    /**
+     * @return BelongsToMany
+     */
+    public function posts(): BelongsToMany
     {
         return $this->belongsToMany(
             Post::class,

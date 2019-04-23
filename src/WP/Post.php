@@ -12,6 +12,7 @@ use WeDevs\ORM\WP\Term\TermTaxonomy;
 /**
  * Class Post
  * @package WeDevs\ORM\WP
+ * @mixin Builder
  */
 class Post extends Model
 {
@@ -31,12 +32,17 @@ class Post extends Model
 
     protected $fillable = [
         'post_title',
-        'post_parent'
+        'post_parent',
     ];
 
     protected $casts = [
-        'ID'          => 'integer',
-        'post_parent' => 'integer',
+        'ID'            => 'integer',
+        'author'        => 'integer',
+        'post_parent'   => 'integer',
+        'post_date'     => 'datetime',
+        'post_modified' => 'datetime',
+        'menu_order'    => 'integer',
+        'comment_count' => 'integer',
     ];
 
     /**
@@ -122,7 +128,7 @@ class Post extends Model
      * Get meta fields from the post
      * @return HasMany
      */
-    public function meta(): HasMany
+    public function metas(): HasMany
     {
         return $this->hasMany(PostMeta::class, 'post_id');
     }
@@ -140,7 +146,7 @@ class Post extends Model
      * Get Child Post
      * @return HasMany
      */
-    public function childs(): HasMany
+    public function children(): HasMany
     {
         return $this->hasMany(static::class, 'post_parent', 'ID');
     }
