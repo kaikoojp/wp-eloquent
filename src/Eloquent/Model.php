@@ -25,6 +25,17 @@ abstract class Model extends Eloquent
     }
 
     /**
+     * Set the table associated with the model.
+     * @param  string $table
+     * @return $this
+     */
+    public function setTable($table): self
+    {
+        $this->table = str_replace($this->getTablePrefix(), '', $table);
+        return $this;
+    }
+
+    /**
      * Get the table associated with the model.
      * Append the WordPress table prefix with the table name if
      * no table name is provided
